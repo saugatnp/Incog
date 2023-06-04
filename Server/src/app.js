@@ -17,7 +17,7 @@ app.get('/saugat', (req, res) => {
   io.on('connection', (socket) => {
     console.log('a user connected');
     socket.on('username', (msg) => {
-
+ 
 
         socket.emit('redirect', 'http://localhost:3000/saugat');
       });
