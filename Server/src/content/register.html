@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Register</title>
+</head>
+
+<body>
+    <h1>Register</h1>
+    <form action="" id="form">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required>
+        <br>
+        <input type="submit" value="Register">
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        var form = document.getElementById('form');
+
+        var username = document.getElementById('username');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (username.value) {
+                socket.emit('username', username.value);
+                sessionStorage.setItem("username", username.value);
+
+                username.value = '';
+            }
+        });
+        socket.on('redirect', (url) => {
+            window.location.href = url;
+        });
+
+    </script>
+</body>
+
+</html>
