@@ -4,6 +4,7 @@
 <head>
     <title>Register</title>
 </head>
+<script src="socket.js"></script>
 
 <body>
     <h1>Register</h1>
@@ -14,25 +15,38 @@
         <input type="submit" value="Register">
     </form>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        var socket = io();
-        var form = document.getElementById('form');
+    <script type="module">
+        import { socket } from './socket.js';
 
-        var username = document.getElementById('username');
+        var form = document.getElementById('form');
+        var user = document.getElementById('username');
+
+
+
+
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-            if (username.value) {
-                socket.emit('username', username.value);
-                sessionStorage.setItem("username", username.value);
+            if (user.value) {
+                // const socket = io({
+                //     autoConnect: false,
+                //     query: { token: user.value }
 
-                username.value = '';
+                // });
+                socket.io.opts.query = { token: user.value };
+
+
+                socket.connect();
+                socket.on('redirect', (url) => {
+                    window.location.href = url;
+                });
+
+
+                user.value = '';
             }
-        });
-        socket.on('redirect', (url) => {
-            window.location.href = url;
         });
 
     </script>
+
 </body>
 
 </html>

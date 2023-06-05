@@ -71,7 +71,6 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    var socket = io();
     var messages = document.getElementById('messages');
 
     var form = document.getElementById('form');
@@ -80,8 +79,8 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (input.value) {
-        socket.emit('message', {'username':sessionStorage.getItem("username"),'msg':input.value});
-        input.value = '';
+        socket.emit('message', {'msg':input.value});
+        input.value = ''; 
       }
     });
 
