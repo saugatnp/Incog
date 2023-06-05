@@ -64,27 +64,49 @@
 <body>
   <ul id="messages"></ul>
   <form id="form" action="">
-    <input id="input" autocomplete="off" /><button>Send</button>
+    <input id="input" autocomplete="off" disabled /><button>Send</button>
   </form>
 
 
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    var messages = document.getElementById('messages');
+    const socket = io({
+      query: { token: localStorage.getItem('token'), type: 'chat' }
+    });
+    socket.emit('find-room', null);
 
+
+    var messages = document.getElementById('messages');
     var form = document.getElementById('form');
     var input = document.getElementById('input');
+    var roomId = null;
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (input.value) {
-        socket.emit('message', {'msg':input.value});
-        input.value = ''; 
+
+        // socket.to(roomId).emit('message', {'msg': input.value });
+        socket.emit('message', { 'roomId': roomId, 'msg': input.value });
+        var msg = document.createElement('li');
+
+        msg.textContent = 'You : ' + input.value;
+        messages.appendChild(msg);
+        window.scrollTo(0, document.body.scrollHeight);
+        input.value = '';
       }
     });
 
-    socket.on('message', function(m){
+
+    socket.on('connected', function (m) {
+      roomId = m.roomId;
+      if (m.roomId != null) {
+        input.disabled = false;
+      }
+    }
+    );
+
+    socket.on('message', function (m) {
       var msg = document.createElement('li');
 
       msg.textContent = m.username + ': ' + m.message;
@@ -92,6 +114,9 @@
       window.scrollTo(0, document.body.scrollHeight);
 
 
+    })
+    socket.on('diconnect', function () {
+      socket.emit('find-room', null);
     })
   </script>
 </body>
