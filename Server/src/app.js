@@ -5,8 +5,11 @@ const http = require('http').createServer(app);
 const Server = require("socket.io");
 const io = new Server(http);
 
+
+
 var rooms = [];
 var clientList = [];
+
 
 
 
@@ -22,9 +25,22 @@ app.get('/chat', (req, res) => {
 
 
 
+
+app.get('/style.css', (req, res) => {
+  res.sendFile(__dirname + '/content/style.css');
+});
+
+
+
+
 io.on('connection', (socket) => {
+
   socket.joinRooms = [];
+
   clientList.push(socket.id);
+
+
+
   socket.on('find-room', (msg) => {
     var roomId = []
     if (rooms.length == 0 || rooms.every(x => x.users.length == 2)) {
@@ -47,14 +63,16 @@ io.on('connection', (socket) => {
   socket.on('message', (msg) => {
     socket.broadcast.to(msg.roomId).emit('message', { 'username': socket.handshake.query.token, "message": msg.msg });
   });
+
+
   socket.on('disconnect', () => {
     clientList.splice(clientList.indexOf(socket.id), 1);
     var disconnectedRoom = rooms.filter(x => socket.joinRooms.includes(x.id));
     if (disconnectedRoom.length > 0)
       io.to(disconnectedRoom[0].id).emit('disconnect', { 'username': "Server", "message": "User disconnected" });
-
   });
 });
+
 
 
 
@@ -71,6 +89,7 @@ io.use((socket, next) => {
     console.log(err);
   }
 });
+
 
 
 
