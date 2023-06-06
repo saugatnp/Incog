@@ -2,14 +2,26 @@
 <html>
 
 <head>
-  <title>Socket.IO chat</title>
+  <title>Incog</title>
   <!-- css link -->
   <link rel="stylesheet" type="text/css" href="style.css">
 
 </head>
 
 <body>
-  <ul id="messages"></ul>
+
+  <div class="loader-div" id="loader-div">
+    <div class="loader-outer-div">
+      <div class="loader"></div>
+    </div>
+    User disconnected!..Please wait until we find someone to chat with..
+
+  </div>
+
+
+  <ul id="messages">
+    <li id="message-list"></li>
+  </ul>
   <form id="form" action="">
     <input id="input" autocomplete="off" disabled /><button>Send</button>
   </form>
@@ -25,6 +37,7 @@
     var messages = document.getElementById('messages');
     var form = document.getElementById('form');
     var input = document.getElementById('input');
+    var loader = document.getElementById('loader-div');
     var roomId = null;
 
     form.addEventListener('submit', function (e) {
@@ -34,7 +47,7 @@
         // socket.to(roomId).emit('message', {'msg': input.value });
         socket.emit('message', { 'roomId': roomId, 'msg': input.value });
         var msg = document.createElement('li');
-
+        msg.id = "message-list"
         msg.textContent = 'You : ' + input.value;
         messages.appendChild(msg);
         window.scrollTo(0, document.body.scrollHeight);
@@ -45,22 +58,33 @@
 
     socket.on('connected', function (m) {
       roomId = m.roomId;
+      loader.hidden = true;
       if (m.roomId != null) {
         input.disabled = false;
       }
+      var elementToDelete = document.querySelectorAll('#message-list');
+      elementToDelete.forEach(element => {
+        element.remove();
+      });
     }
     );
 
     socket.on('message', function (m) {
       var msg = document.createElement('li');
-
+      msg.id = "message-list"
       msg.textContent = m.username + ': ' + m.message;
       messages.appendChild(msg);
       window.scrollTo(0, document.body.scrollHeight);
 
 
     })
-    socket.on('diconnect', function () {
+    socket.on('disconnect', function () {
+      // var elementToDelete = document.querySelectorAll('#message-list');
+      // elementToDelete.forEach(element => {
+      //   element.remove();
+      // });
+      loader.hidden = false;
+      input.disabled = true;
       socket.emit('find-room', null);
     })
   </script>
