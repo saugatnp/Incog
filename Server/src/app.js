@@ -4,6 +4,7 @@ const app = express();
 const http = require('http').createServer(app);
 const Server = require("socket.io");
 const io = new Server(http);
+const path = require("path")
 
 
 
@@ -33,6 +34,15 @@ app.get('/chat', (req, res) => {
 app.get('/style.css', (req, res) => {
   res.sendFile(__dirname + '/content/style.css');
 });
+
+app.get('/bootstrap.css', (req, res) => {
+  res.sendFile(__dirname + '/node_modules/bootstrap/dist/css/bootstrap.min.css');
+});
+
+app.use(
+  "/css",
+  express.static(path.join(__dirname, "node_modules/bootstrap/dist/css"))
+)
 
 
 

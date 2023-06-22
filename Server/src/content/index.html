@@ -3,28 +3,45 @@
 
 <head>
   <title>Incog</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- css link -->
   <link rel="stylesheet" type="text/css" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
 
 </head>
 
-<body>
+<body class="d-flex align-items-center ">
+  <div class="row w-100" style="height:90vh;margin-top:5vh!important">
+    <div class="col-lg-5 mx-auto mid-container pt-4 pb-2 p-0">
+      <div class="message-container pt-4">
+        <ul id="messages">
+          <li id="message-list"></li>
+        </ul>
+        <form id="form" action="" class="w-100">
+          <div class="row">
+            <div class="col-sm d-flex align-items-center">
+              <input id="input" autocomplete="off" disabled class="w-100 form-control"/>
+            </div>
+            <div class="col-sm-3 text-center">
+              <button class="button text-right mx-auto px-3 py-2">Send</button>
+            </div>
+          </div>
+        </form>
 
+      </div>
+    </div>
+  </div>
   <div class="loader-div" id="loader-div">
     <div class="loader-outer-div">
       <div class="loader"></div>
     </div>
-    Please wait until we find someone to chat with..
+    <label class="text-white" for="">Please wait until we find someone to chat with..</label>
 
   </div>
 
 
-  <ul id="messages">
-    <li id="message-list"></li>
-  </ul>
-  <form id="form" action="">
-    <input id="input" autocomplete="off" disabled /><button>Send</button>
-  </form>
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -72,7 +89,7 @@
     socket.on('message', function (m) {
       var msg = document.createElement('li');
       msg.id = "message-list"
-      msg.textContent = m.username + ': ' + m.message;
+      msg.textContent = m.username + ' : ' + m.message;
       messages.appendChild(msg);
       window.scrollTo(0, document.body.scrollHeight);
 
