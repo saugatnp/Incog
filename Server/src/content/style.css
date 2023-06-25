@@ -19,6 +19,14 @@ label {
     padding: 40px 20px 40px 20px;
 
 }
+textarea {
+  padding: 0px 20px 0px 20px;
+  width: 100%;
+  background-color: #ffffff1a;
+  border: none;
+  border-radius: 8px;
+  color: whitesmoke;
+}
 input[type=text]{
   /* height: 40px; */
   padding: 0px 20px 0px 20px;

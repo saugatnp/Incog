@@ -22,6 +22,14 @@ app.get('/demo', (req, res) => {
   res.sendFile(__dirname + '/content/chat.html');
 });
 
+app.get('/room', (req, res) => {
+  var room = JSON.stringify(rooms);
+  res.end(room);
+});
+app.get('/client', (req, res) => {
+  var client =  JSON.stringify(clientList);
+   res.end(client);
+ });
 
 
 app.get('/chat', (req, res) => {
@@ -57,18 +65,36 @@ io.on('connection', (socket) => {
 
   socket.on('find-room', (msg) => {
     var roomId = []
-    if (rooms.length == 0 || rooms.every(x => x.users.length == 2)) {
+    console.log(rooms);
+    if (rooms.length != 0 && rooms.every(x => x.users.length != 2)) {
+      var roomId = rooms.find(x => x.users.length != 2);
+      socket.join(roomId.id);
+      socket.joinRooms.push(roomId.id);
+      rooms.find(x => x.id == roomId.id).users.push(socket.id);
+
+    
+    }
+    else {
+        
       roomId.id = Math.floor(Math.random() * 1000000);
       rooms.push({ id: roomId.id, users: [socket.id] });
       socket.join(roomId.id);
       socket.joinRooms.push(roomId.id);
     }
-    else {
-      var roomId = rooms.find(x => x.users.length != 2);
-      socket.join(roomId.id);
-      socket.joinRooms.push(roomId.id);
-      rooms.find(x => x.id == roomId.id).users.push(socket.id);
-    }
+
+
+    // if (rooms.length == 0 || rooms.every(x => x.users.length == 2)) {
+    //   roomId.id = Math.floor(Math.random() * 1000000);
+    //   rooms.push({ id: roomId.id, users: [socket.id] });
+    //   socket.join(roomId.id);
+    //   socket.joinRooms.push(roomId.id);
+    // }
+    // else {
+    //   var roomId = rooms.find(x => x.users.length != 2);
+    //   socket.join(roomId.id);
+    //   socket.joinRooms.push(roomId.id);
+    //   rooms.find(x => x.id == roomId.id).users.push(socket.id);
+    // }
     if (rooms.find(x => x.id == roomId.id).users.length == 2)
       io.to(roomId.id).emit('connected', { 'roomId': roomId.id, "message": "User connected" });
   });

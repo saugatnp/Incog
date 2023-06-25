@@ -46,7 +46,11 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io({
-      query: { token: localStorage.getItem('token'), type: 'chat' }
+      query: { 
+        token: localStorage.getItem('token'),
+        type: 'chat',
+        interests: localStorage.getItem('interests')
+      }
     });
     socket.emit('find-room', null);
 
