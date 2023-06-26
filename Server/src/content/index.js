@@ -41,6 +41,7 @@ var roomId ;
       roomId.innerText = 'Room Id : ' + m.roomId;
       var elementToDelete = document.querySelectorAll('#message-list');
       elementToDelete.forEach(element => {
+
         element.remove();
       });
     }
@@ -56,10 +57,7 @@ var roomId ;
 
     })
     socket.on('disconnect', function () {
-      // var elementToDelete = document.querySelectorAll('#message-list');
-      // elementToDelete.forEach(element => {
-      //   element.remove();
-      // });
+   
       loader.hidden = false;
       input.disabled = true;
       socket.emit('find-room', null);

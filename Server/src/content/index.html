@@ -13,12 +13,13 @@
 </head>
 
 <body class="d-flex align-items-center ">
-  <div class="row w-100" style="height:90vh;margin-top:5vh!important">
+  <div class="row w-100" style="height:90vh;margin-top:2vh!important">
+    <div class="row">
+      <!-- <input type="text" class="form-control" id="room"> -->
+      <label for=""class="mx-auto text-center" id="room"></label>
+    </div>
     <div class="col-lg-5 mx-auto mid-container pt-4 pb-2 p-0">
-      <div class="row">
-        <!-- <input type="text" class="form-control" id="room"> -->
-        <label for="" id="room"></label>
-      </div>
+
       <div class="message-container pt-4">
         <ul id="messages">
           <li id="message-list"></li>
@@ -26,7 +27,7 @@
         <form id="form" action="" class="w-100">
           <div class="row">
             <div class="col-sm d-flex align-items-center">
-              <input id="input" autocomplete="off" disabled class="w-100 form-control"/>
+              <input id="input" autocomplete="off" disabled class="w-100 form-control" />
             </div>
             <div class="col-sm-3 text-center">
               <button class="button text-right mx-auto px-3 py-2">Send</button>
@@ -49,7 +50,7 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/index.js">
-    
+
   </script>
 </body>
 

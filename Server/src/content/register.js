@@ -19,7 +19,6 @@ form.addEventListener('submit', function (e) {
         });
         localStorage.setItem('token', user.value);
         localStorage.setItem('interests', interests.value);
-        // socket.io.opts.query = { token: user.value };
 
 
         socket.connect();

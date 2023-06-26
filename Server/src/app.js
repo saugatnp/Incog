@@ -87,18 +87,7 @@ io.on('connection', (socket) => {
     }
 
 
-    // if (rooms.length == 0 || rooms.every(x => x.users.length == 2)) {
-    //   roomId.id = Math.floor(Math.random() * 1000000);
-    //   rooms.push({ id: roomId.id, users: [socket.id] });
-    //   socket.join(roomId.id);
-    //   socket.joinRooms.push(roomId.id);
-    // }
-    // else {
-    //   var roomId = rooms.find(x => x.users.length != 2);
-    //   socket.join(roomId.id);
-    //   socket.joinRooms.push(roomId.id);
-    //   rooms.find(x => x.id == roomId.id).users.push(socket.id);
-    // }
+  
     if (rooms.find(x => x.id == roomId.id).users.length == 2){
       io.to(roomId.id).emit('connected', { 'roomId': roomId.id, "message": "User connected" });
     }
@@ -117,10 +106,7 @@ io.on('connection', (socket) => {
     if (type !== "register") {
       clientList.splice(clientList.indexOf(socket.id), 1);
       var disconnectedRoom = rooms.filter(x => socket.joinRooms.includes(x.id));
-      // console.log("disconnected room :" , disconnectedRoom)
-      // console.log("rooms :" , rooms)
       rooms.splice(rooms.indexOf(disconnectedRoom.users) - 1  , 1);
-      // console.log("rooms :" , rooms)
       if (disconnectedRoom.length > 0)
         io.to(disconnectedRoom[0].id).emit('disconnect', { 'username': "Server", "message": "User disconnected" });
     }
