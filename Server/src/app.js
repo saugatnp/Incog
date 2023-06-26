@@ -37,7 +37,12 @@ app.get('/chat', (req, res) => {
 });
 
 
-
+app.get('/index.js', (req, res) => {
+  res.sendFile(__dirname + '/content/index.js');
+});
+app.get('/register.js', (req, res) => {
+  res.sendFile(__dirname + '/content/register.js');
+});
 
 app.get('/style.css', (req, res) => {
   res.sendFile(__dirname + '/content/style.css');
