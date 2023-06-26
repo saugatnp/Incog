@@ -15,6 +15,10 @@
 <body class="d-flex align-items-center ">
   <div class="row w-100" style="height:90vh;margin-top:5vh!important">
     <div class="col-lg-5 mx-auto mid-container pt-4 pb-2 p-0">
+      <div class="row">
+        <!-- <input type="text" class="form-control" id="room"> -->
+        <label for="" id="room"></label>
+      </div>
       <div class="message-container pt-4">
         <ul id="messages">
           <li id="message-list"></li>
@@ -45,6 +49,7 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
+    var roomId ;
     const socket = io({
       query: { 
         token: localStorage.getItem('token'),
@@ -59,14 +64,13 @@
     var form = document.getElementById('form');
     var input = document.getElementById('input');
     var loader = document.getElementById('loader-div');
-    var roomId = null;
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (input.value) {
-
+        console.log(roomId)
         // socket.to(roomId).emit('message', {'msg': input.value });
-        socket.emit('message', { 'roomId': roomId, 'msg': input.value });
+        socket.emit('message', { 'roomId': sessionStorage.getItem("room"), 'msg': input.value });
         var msg = document.createElement('li');
         msg.id = "message-list"
         msg.textContent = 'You : ' + input.value;
@@ -79,10 +83,15 @@
 
     socket.on('connected', function (m) {
       roomId = m.roomId;
-      loader.hidden = true;
+      sessionStorage.setItem("room",  m.roomId  );
+
       if (m.roomId != null) {
+        loader.hidden = true;
         input.disabled = false;
+        console.log(m.roomId)
       }
+      var roomId = document.getElementById('room');
+      roomId.innerText = 'Room Id : ' + m.roomId;
       var elementToDelete = document.querySelectorAll('#message-list');
       elementToDelete.forEach(element => {
         element.remove();
@@ -106,6 +115,7 @@
       // });
       loader.hidden = false;
       input.disabled = true;
+      console.log('disconnected')
       socket.emit('find-room', null);
     })
   </script>
