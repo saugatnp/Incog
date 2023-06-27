@@ -70,8 +70,10 @@ io.on('connection', (socket) => {
 
   socket.on('find-room', (msg) => {
     var roomId = []
-    if (rooms.length != 0 && rooms.every(x => x.users.length != 2)) {
+    // console.log(rooms.every(x => x.users.length != 2))
+    if (rooms.length != 0 && !rooms.every(x => x.users.length == 2)) {
       var roomId = rooms.find(x => x.users.length != 2);
+      console.log(roomId)
       socket.join(roomId.id);
       socket.joinRooms.push(roomId.id);
       rooms.find(x => x.id == roomId.id).users.push(socket.id);
