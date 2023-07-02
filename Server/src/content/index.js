@@ -1,9 +1,9 @@
 var roomId ;
     const socket = io({
       query: { 
-        token: localStorage.getItem('token'),
+        token: sessionStorage.getItem('token'),
         type: 'chat',
-        interests: localStorage.getItem('interests')
+        interests: sessionStorage.getItem('interests')
       }
     });
     socket.emit('find-room', null);

@@ -70,7 +70,6 @@ io.on('connection', (socket) => {
 
   socket.on('find-room', (msg) => {
     var roomId = []
-    // console.log(rooms.every(x => x.users.length != 2))
     if (rooms.length != 0 && !rooms.every(x => x.users.length == 2)) {
       var roomId = rooms.find(x => x.users.length != 2);
       console.log(roomId)
@@ -98,7 +97,6 @@ io.on('connection', (socket) => {
 
 
   socket.on('message', (msg) => {
-    console.log("message" ,msg);
     socket.broadcast.to(msg.roomId).emit('message', { 'username': socket.handshake.query.token, "message": msg.msg });
   });
 

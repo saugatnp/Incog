@@ -17,8 +17,8 @@ form.addEventListener('submit', function (e) {
             }
 
         });
-        localStorage.setItem('token', user.value);
-        localStorage.setItem('interests', interests.value);
+        sessionStorage.setItem('token', user.value);
+        sessionStorage.setItem('interests', interests.value);
 
 
         socket.connect();
